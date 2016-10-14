@@ -14,7 +14,23 @@ describe('HOF Emailer', () => {
     emailer = new Emailer(Object.assign(config, { data, steps, fields }));
   });
 
-  it('does something', () => {
-    emailer.sendEmails()
+  it('sends emails', done => {
+    emailer.sendEmails().then(info => {
+      info[0].response.should.be.an.instanceOf(Buffer);
+      info[1].response.should.be.an.instanceOf(Buffer);
+      done();
+    });
+  });
+
+  it('contains data passed', done => {
+    emailer.sendEmails().then(info => {
+      const response = info[0].response.toString('utf-8');
+
+      response.should.contain('123 Example Street\nCroydon');
+      response.should.contain('Some text to find from within the email');
+      done();
+    }).catch(err => {
+      console.log(err);
+    });
   });
 });

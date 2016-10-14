@@ -19,7 +19,7 @@ module.exports = {
   'name-text': 'Sterling Archer',
   'person-one': 'A name',
   'person-two': 'Another name',
-  'person-text': 'Individual name',
+  'person-text': 'Some text to find from within the email',
   'postcode-code': 'CR0 1ND',
   'type-radio': 'birth',
   'when-date': '01/01/2001',
