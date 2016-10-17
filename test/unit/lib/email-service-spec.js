@@ -187,6 +187,15 @@ describe('Email Service', () => {
             done();
           });
         });
+
+        it('catches errors bubbled from _renderTemplate', done => {
+          const err = new Error('oops');
+          EmailService.prototype._renderTemplate.returns(new Promise((resolve, reject) => reject(err)));
+          emailService.sendEmail('sterling@archer.com').catch(error => {
+            error.should.be.an.instanceOf(Error);
+            done();
+          });
+        });
       });
     });
 
@@ -280,7 +289,7 @@ describe('Email Service', () => {
           EmailService.prototype._includeDate.restore();
           emailService.data = [{
             fields: [{
-              field: 'a-field',
+              label: 'a-field',
               value: 'A Value'
             }]
           }];
@@ -302,7 +311,7 @@ describe('Email Service', () => {
 
         it('adds the UTC date returned', () => {
           emailService.data[0].fields[0].should.be.eql({
-            field: 'submission-date',
+            label: 'Submission Date',
             value: '00:00:00 01/01/2001'
           });
         });
@@ -331,7 +340,8 @@ describe('Email Service', () => {
           emailService._renderTemplate('template', 'customer', data).then(() => {
             emailService.app.render.should.have.been.calledWith('template', {
               data,
-              recipient: 'customer',
+              intro: undefined,
+              outro: undefined,
               partials: undefined
             });
             done();

@@ -33,10 +33,18 @@ describe('HOF Emailer', () => {
   });
 
   describe('Template Rendering', () => {
-    it('renders a raw template', done => {
-      emailService._renderTemplate('raw', 'customer', emailService.data).then(html => {
-        console.log(html);
-        done();
+    describe('Raw Template', () => {
+      let output;
+      beforeEach(done => {
+        emailService._renderTemplate('raw', 'customer', emailService.data).then(html => {
+          output = html.trim().split('\n').map(line => line.trim());
+          done();
+        });
+      });
+
+      it('contains both customer intro paragraphs', () => {
+        output.includes(config.intro.customer[0]).should.be.true;
+        output.includes(config.intro.customer[1]).should.be.true;
       });
     });
   });
