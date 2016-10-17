@@ -2,6 +2,7 @@
   "preset": "google",
   "maximumLineLength": 120,
   "excludeFiles": [
-    "node_modules/**"
+    "node_modules/**",
+    "coverage/**"
   ]
 }

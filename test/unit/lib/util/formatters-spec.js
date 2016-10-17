@@ -232,4 +232,11 @@ describe('Data Formatters', () => {
       });
     });
   });
+
+  describe('byField', () => {
+    it('returns the data passed', () => {
+      const data = {a: 1, b: 2};
+      Formatters.byField(data).should.be.equal(data);
+    });
+  });
 });

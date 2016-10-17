@@ -1,6 +1,5 @@
 'use strict';
 
-const proxyquire = require('proxyquire');
 const steps = require('../fixtures/steps');
 const fields = require('../fixtures/fields');
 const config = Object.assign({}, require('../fixtures/config'));
@@ -10,18 +9,9 @@ const EmailService = require('../../');
 
 describe('HOF Emailer', () => {
   let emailService;
-  let EmailServiceWithStubbedEmailer;
-  let emailServiceWithStubbedEmailer;
-  let stubbedEmailer;
 
   beforeEach(() => {
-    stubbedEmailer = {
-      sendEmail: sinon.stub()
-    };
     emailService = new EmailService(Object.assign(config, {data, steps, fields}));
-    EmailServiceWithStubbedEmailer = proxyquire('../../', {
-      './emailer': stubbedEmailer
-    });
   });
 
   it('sends emails', done => {
@@ -43,18 +33,11 @@ describe('HOF Emailer', () => {
   });
 
   describe('Template Rendering', () => {
-    // beforeEach(() => {
-    //   emailServiceWithStubbedEmailer = new EmailServiceWithStubbedEmailer(
-    //     Object.assign(config, { data, steps, fields })
-    //   );
-    // });
-
     it('renders a raw template', done => {
       emailService._renderTemplate('raw', 'customer', emailService.data).then(html => {
         console.log(html);
         done();
       });
     });
-
   });
 });
