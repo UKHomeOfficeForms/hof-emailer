@@ -5,7 +5,9 @@ module.exports = {
   'additional-names': {},
   'additional-text': {},
   'additional-radio': {},
-  'address-lookup': {},
+  'address-lookup': {
+    includeInEmail: false
+  },
   'address-textarea': {},
   'country-select': {},
   'details-text': {},
