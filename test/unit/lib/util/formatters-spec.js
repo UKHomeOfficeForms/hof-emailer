@@ -95,9 +95,9 @@ describe('Data Formatters', () => {
 
         it('contains the correct fields', () => {
           child.fields.should.be.eql([
-            {field: 'field-1', value: 'Field 1 Value'},
-            {field: 'field-2', value: 'Field 2 Value'},
-            {field: 'field-x', value: 'Field x Value'}
+            {label: 'field-1', value: 'Field 1 Value'},
+            {label: 'field-2', value: 'Field 2 Value'},
+            {label: 'field-x', value: 'Field x Value'}
           ]);
         });
       });
@@ -125,7 +125,7 @@ describe('Data Formatters', () => {
 
         it('contains the correct fields', () => {
           child.fields.should.be.eql([
-            {field: 'field-3', value: 'Field 3 Value'},
+            {label: 'field-3', value: 'Field 3 Value'},
           ]);
         });
       });
@@ -158,19 +158,19 @@ describe('Data Formatters', () => {
         });
 
         it('contains the correct fields and values', () => {
-          _.sortBy(child.fields, 'field').should.be.eql(_.sortBy([
-            {field: 'about-radio', value: 'Wrong Certificate'},
-            {field: 'type-radio', value: 'birth'},
-            {field: 'additional-names', value: 'Additional Names'},
-            {field: 'additional-text', value: 'Some additional text'},
-            {field: 'additional-radio', value: 'yes'},
-            {field: 'details-text', value: 'Some further details'},
-            {field: 'existing-radio', value: 'no'},
-            {field: 'previous-radio', value: 'no'},
-            {field: 'person-one', value: 'A name'},
-            {field: 'person-two', value: 'Another name'},
-            {field: 'person-text', value: 'Some text to find from within the email'}
-          ], 'field'));
+          _.sortBy(child.fields, 'label').should.be.eql(_.sortBy([
+            {label: 'About Radio', value: 'Wrong Certificate'},
+            {label: 'Type Radio', value: 'birth'},
+            {label: 'Additional Names', value: 'Additional Names'},
+            {label: 'Additional Text', value: 'Some additional text'},
+            {label: 'Additional Radio', value: 'yes'},
+            {label: 'Details Text', value: 'Some further details'},
+            {label: 'Existing Radio', value: 'no'},
+            {label: 'Previous Radio', value: 'no'},
+            {label: 'Person One', value: 'A name'},
+            {label: 'Person Two', value: 'Another name'},
+            {label: 'Person Text', value: 'Some text to find from within the email'}
+          ], 'label'));
         });
       });
 
@@ -192,14 +192,14 @@ describe('Data Formatters', () => {
         });
 
         it('contains the correct fields and values', () => {
-          _.sortBy(child.fields, 'field').should.be.eql(_.sortBy([
-            {field: 'how-radio', value: 'post'},
-            {field: 'online-toggle-text', value: '12345'},
-            {field: 'telephone-toggle-text', value: 'abcde'},
-            {field: 'telephone-toggle-text-2', value: 'abc123'},
-            {field: 'when-date', value: '01/01/2001'},
-            {field: 'which-radio', value: 'post'}
-          ], 'field'));
+          _.sortBy(child.fields, 'label').should.be.eql(_.sortBy([
+            {label: 'How Radio', value: 'post'},
+            {label: 'Online Toggle Text', value: '12345'},
+            {label: 'Telephone Toggle Text', value: 'abcde'},
+            {label: 'Telephone Toggle Text 2', value: 'abc123'},
+            {label: 'When Date', value: '01/01/2001'},
+            {label: 'Which Radio', value: 'post'}
+          ], 'label'));
         });
       });
 
@@ -221,13 +221,13 @@ describe('Data Formatters', () => {
         });
 
         it('contains the correct fields and values', () => {
-          _.sortBy(child.fields, 'field').should.be.eql(_.sortBy([
-            {field: 'address-textarea', value: '123 Example Street\nCroydon'},
-            {field: 'country-select', value: 'United Kingdom'},
-            {field: 'email-text', value: 'sterling@archer.com'},
-            {field: 'name-text', value: 'Sterling Archer'},
-            {field: 'postcode-code', value: 'CR0 1ND'}
-          ], 'field'));
+          _.sortBy(child.fields, 'label').should.be.eql(_.sortBy([
+            {label: 'Address Textarea', value: '123 Example Street\nCroydon'},
+            {label: 'Country Select', value: 'United Kingdom'},
+            {label: 'Email Text', value: 'sterling@archer.com'},
+            {label: 'Name Text', value: 'Sterling Archer'},
+            {label: 'Postcode Code', value: 'CR0 1ND'}
+          ], 'label'));
         });
       });
     });
