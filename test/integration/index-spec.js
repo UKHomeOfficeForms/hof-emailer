@@ -1,21 +1,31 @@
 'use strict';
 
+const proxyquire = require('proxyquire');
 const steps = require('../fixtures/steps');
 const fields = require('../fixtures/fields');
 const config = Object.assign({}, require('../fixtures/config'));
 const data = Object.assign({}, require('../fixtures/data'));
 
-const Emailer = require('../../');
+const EmailService = require('../../');
 
 describe('HOF Emailer', () => {
-  let emailer;
+  let emailService;
+  let EmailServiceWithStubbedEmailer;
+  let emailServiceWithStubbedEmailer;
+  let stubbedEmailer;
 
   beforeEach(() => {
-    emailer = new Emailer(Object.assign(config, { data, steps, fields }));
+    stubbedEmailer = {
+      sendEmail: sinon.stub()
+    };
+    emailService = new EmailService(Object.assign(config, {data, steps, fields}));
+    EmailServiceWithStubbedEmailer = proxyquire('../../', {
+      './emailer': stubbedEmailer
+    });
   });
 
   it('sends emails', done => {
-    emailer.sendEmails().then(info => {
+    emailService.sendEmails().then(info => {
       info[0].response.should.be.an.instanceOf(Buffer);
       info[1].response.should.be.an.instanceOf(Buffer);
       done();
@@ -23,14 +33,28 @@ describe('HOF Emailer', () => {
   });
 
   it('contains data passed', done => {
-    emailer.sendEmails().then(info => {
+    emailService.sendEmails().then(info => {
       const response = info[0].response.toString('utf-8');
 
       response.should.contain('123 Example Street\nCroydon');
       response.should.contain('Some text to find from within the email');
       done();
-    }).catch(err => {
-      console.log(err);
     });
+  });
+
+  describe('Template Rendering', () => {
+    // beforeEach(() => {
+    //   emailServiceWithStubbedEmailer = new EmailServiceWithStubbedEmailer(
+    //     Object.assign(config, { data, steps, fields })
+    //   );
+    // });
+
+    it('renders a raw template', done => {
+      emailService._renderTemplate('raw', 'customer', emailService.data).then(html => {
+        console.log(html);
+        done();
+      });
+    });
+
   });
 });

@@ -119,8 +119,8 @@ describe('Data Formatters', () => {
         });
 
         it('doesn\'t contain fields with includeInEmail: false', () => {
-          const result = child.fields.find(field => field.field === 'field-4');
-          chai.expect(result).to.be.undefined;
+          const field = child.fields.find(fieldObject => fieldObject.field === 'field-4');
+          chai.expect(field).to.be.undefined;
         });
 
         it('contains the correct fields', () => {

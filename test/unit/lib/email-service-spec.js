@@ -182,8 +182,8 @@ describe('Email Service', () => {
         it('logs errors to the console', done => {
           const err = new Error('oops');
           emailService.emailer.sendEmail.yields(err);
-          emailService.sendEmail('sterling@archer.com').catch(err => {
-            console.error.should.have.been.calledWithExactly('Error sending email to:', 'sterling@archer.com', err);
+          emailService.sendEmail('sterling@archer.com').catch(error => {
+            console.error.should.have.been.calledWithExactly('Error sending email to:', 'sterling@archer.com', error);
             done();
           });
         });
@@ -211,7 +211,7 @@ describe('Email Service', () => {
 
         afterEach(() => {
           sinon.stub(EmailService.prototype, '_initApp');
-        })
+        });
 
         it('initialises a new express instance', () => {
           express.should.have.been.calledOnce;
@@ -244,7 +244,7 @@ describe('Email Service', () => {
 
         it('gets the views from the app', () => {
           emailService.app.get.should.have.been.calledWithExactly('views');
-        })
+        });
 
         it('calls traverse with the views directory', () => {
           traverse.should.have.been.calledWithExactly('/path/to/views');

@@ -1,11 +1,14 @@
-{{#t}}email.information.subject{{/t}}
-{{#t}}email.content.{{recipient}}-intro{{/t}}
-{{#t}}email.information.enquiry{{/t}}
+{{#intro}}
+  {{.}}
+{{/intro}}
 {{#data}}
-  {{#t}}pages.{{section}}.header{{/t}}
+  {{section}}
   {{#fields}}
     {{#value}}
-      {{#t}}email.fields.{{field}}{{/t}}: {{value}}
+      {{field}}: {{value}}
     {{/value}}
   {{/fields}}
 {{/data}}
+{{#outro}}
+  {{.}}
+{{/outro}}
