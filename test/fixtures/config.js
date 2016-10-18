@@ -12,7 +12,7 @@ module.exports = {
   from: 'sterling@archer.com',
   groupBySection: true,
   customerEmail: 'customer@hotmail.com',
-  caseworkerEmail: 'caseworker@digital.homeoffice.gov.uk',
+  caseworker: 'caseworker@digital.homeoffice.gov.uk',
   subject: 'GRO Email',
   intro: {
     customer: [
