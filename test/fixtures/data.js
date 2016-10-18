@@ -6,7 +6,7 @@ module.exports = {
   'additional-text': 'Some additional text',
   'additional-radio': 'yes',
   'address-lookup': '123 Example Street',
-  'address-textarea': '123 Example Street\nCroydon',
+  'address-textarea': '123 Example Street, Croydon',
   'country-select': 'United Kingdom',
   'details-text': 'Some further details',
   'existing-radio': 'no',

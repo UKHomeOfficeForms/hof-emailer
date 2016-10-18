@@ -222,7 +222,7 @@ describe('Data Formatters', () => {
 
         it('contains the correct fields and values', () => {
           _.sortBy(child.fields, 'label').should.be.eql(_.sortBy([
-            {label: 'Address Textarea', value: '123 Example Street\nCroydon'},
+            {label: 'Address Textarea', value: '123 Example Street, Croydon'},
             {label: 'Country Select', value: 'United Kingdom'},
             {label: 'Email Text', value: 'sterling@archer.com'},
             {label: 'Name Text', value: 'Sterling Archer'},
