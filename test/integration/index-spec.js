@@ -48,7 +48,7 @@ describe('HOF Emailer', () => {
 
       it('contains both customer intro paragraphs', () => {
         config.intro.customer.forEach(paragraph => {
-          output.includes(paragraph).should.be.true;
+          (output.indexOf(paragraph) > -1).should.be.true;
         });
       });
 
@@ -58,7 +58,7 @@ describe('HOF Emailer', () => {
           .map((field, key) => `${field.label}: ${data[key]}`)
           .value();
         formatted.forEach(line => {
-          output.includes(line).should.be.true;
+          (output.indexOf(line) > -1).should.be.true;
         });
       });
     });
