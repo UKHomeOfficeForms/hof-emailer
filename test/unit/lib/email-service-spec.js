@@ -1,6 +1,8 @@
 'use strict';
 
 const path = require('path');
+const _ = require('lodash');
+const data = require('../../fixtures/data');
 const proxyquire = require('proxyquire');
 
 describe('Email Service', () => {
@@ -10,22 +12,16 @@ describe('Email Service', () => {
   let express;
   let hoganExpressStrict;
   let traverse;
-  let Formatters;
 
   beforeEach(() => {
     express = sinon.stub();
     hoganExpressStrict = sinon.stub();
     traverse = sinon.stub().returns({});
     Emailer = sinon.stub();
-    Formatters = {
-      bySection: sinon.stub().returns(true),
-      byField: sinon.stub().returns(true)
-    };
     EmailService = proxyquire('../../../lib/email-service', {
       express,
       'hogan-express-strict': hoganExpressStrict,
       'express-partial-templates/lib/traverse': traverse,
-      './util/formatters': Formatters,
       './emailer': Emailer
     });
   });
@@ -44,29 +40,17 @@ describe('Email Service', () => {
     });
 
     it('calls _initApp', () => {
-      emailService = new EmailService({});
+      emailService = new EmailService({data});
       EmailService.prototype._initApp.should.have.been.calledOnce;
     });
 
     it('calls _initEmailer', () => {
-      emailService = new EmailService({});
+      emailService = new EmailService({data});
       EmailService.prototype._initEmailer.should.have.been.calledOnce;
     });
 
-    it('calls the byField formatter', () => {
-      emailService = new EmailService({});
-      Formatters.byField.should.have.been.calledOnce;
-    });
-
-    it('calls the bySection formatter if groupBySection is true', () => {
-      emailService = new EmailService({
-        groupBySection: true
-      });
-      Formatters.bySection.should.have.been.calledOnce;
-    });
-
     it('calls _includeDate', () => {
-      emailService = new EmailService({});
+      emailService = new EmailService({data});
       EmailService.prototype._includeDate.should.have.been.calledOnce;
     });
 
@@ -74,18 +58,18 @@ describe('Email Service', () => {
       chai.expect(() => new EmailService(null)).to.throw(/^No options provided$/);
     });
 
-    it('throws an error if result of formatData returns falsy', () => {
-      Formatters.byField.returns(false);
+    it('throws an error if data not provided', () => {
       chai.expect(() => new EmailService({})).to.throw(/^No data provided$/);
     });
 
     it('doesn\'t call _includeDate if options.includeDate is false', () => {
-      emailService = new EmailService({includeDate: false});
+      emailService = new EmailService({data, includeDate: false});
       EmailService.prototype._includeDate.should.not.have.been.called;
     });
 
     it('plucks emailer options from passed options', () => {
       const emailerOptions = {
+        data,
         host: 'localhost',
         port: 8080,
         ignoreTLS: true,
@@ -98,12 +82,12 @@ describe('Email Service', () => {
         replyTo: 'reply@example.com'
       };
       emailService = new EmailService(emailerOptions);
-      emailService.emailerOptions.should.be.eql(emailerOptions);
+      emailService.emailerOptions.should.be.eql(_.omit(emailerOptions, 'data'));
     });
 
     describe('public methods', () => {
       beforeEach(() => {
-        emailService = new EmailService({});
+        emailService = new EmailService({data});
       });
 
       describe('sendEmails()', () => {
@@ -201,7 +185,7 @@ describe('Email Service', () => {
 
     describe('private methods', () => {
       beforeEach(() => {
-        emailService = new EmailService({});
+        emailService = new EmailService({data});
       });
 
       describe('_initApp()', () => {
@@ -336,10 +320,10 @@ describe('Email Service', () => {
         });
 
         it('passes template, recipient and data to the render method of the app', done => {
-          const data = {};
-          emailService._renderTemplate('template', 'customer', data).then(() => {
+          const dummyData = {};
+          emailService._renderTemplate('template', 'customer', dummyData).then(() => {
             emailService.app.render.should.have.been.calledWith('template', {
-              data,
+              data: dummyData,
               intro: undefined,
               outro: undefined,
               partials: undefined

@@ -2,7 +2,7 @@
 
 const proxyquire = require('proxyquire');
 
-describe('HOF Emailer', () => {
+describe('Emailer', () => {
   let EmailerService;
   let emailerService;
   let nodemailer;

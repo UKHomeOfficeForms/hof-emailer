@@ -2,10 +2,8 @@
 
 const _ = require('lodash');
 const DOMParser = require('xmldom').DOMParser;
-const steps = require('../fixtures/steps');
-const fields = require('../fixtures/fields');
-const config = Object.assign({}, require('../fixtures/config'));
-const data = Object.assign({}, require('../fixtures/data'));
+const config = require('../fixtures/config');
+const data = require('../fixtures/data');
 
 const EmailService = require('../../');
 
@@ -15,7 +13,7 @@ describe('HOF Emailer', () => {
   let emailService;
 
   beforeEach(() => {
-    emailService = new EmailService(Object.assign(config, {data, steps, fields}));
+    emailService = new EmailService(Object.assign({}, config, {data}));
   });
 
   it('sends emails', done => {
@@ -53,13 +51,8 @@ describe('HOF Emailer', () => {
       });
 
       it('contains all labels and values from passed config', () => {
-        const formatted = _(fields)
-          .pickBy(field => field.includeInEmail !== false)
-          .map((field, key) => `${field.label}: ${data[key]}`)
-          .value();
-        formatted.forEach(line => {
-          (output.indexOf(line) > -1).should.be.true;
-        });
+        const formatted = _.map(_.flatten(_.map(data, 'fields')), field => `${field.label}: ${field.value}`);
+        formatted.forEach(line => (output.indexOf(line) > -1).should.be.true);
       });
     });
 
@@ -101,8 +94,8 @@ describe('HOF Emailer', () => {
           );
         });
 
-        it('contains 26 rows (fields + intro + outro)', () => {
-          const fieldRows = _.size(_.pickBy(fields, field => field.includeInEmail !== false));
+        it('contains the correct amount of rows (fields + intro + outro)', () => {
+          const fieldRows = _.flatten(_.map(data, 'fields')).length;
           const introRows = config.intro.customer.length;
           const outroRows = config.outro.customer.length;
           rows.length.should.be.equal(fieldRows + introRows + outroRows);
