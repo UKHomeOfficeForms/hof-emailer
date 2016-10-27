@@ -14,20 +14,16 @@ module.exports = {
   customerEmail: 'customer@hotmail.com',
   caseworker: 'caseworker@digital.homeoffice.gov.uk',
   subject: 'GRO Email',
-  intro: {
-    customer: [
-      'This an email for the customer.',
-      'This is another paragraph'
-    ],
-    caseworker: [
-      'This is an email for the caseworker',
-      'This is another paragraph'
-    ]
-  },
-  outro: {
-    customer: [
-      'Thanks for reading.',
-      'This is another paragraph'
-    ]
-  }
+  customerIntro: [
+    'This an email for the customer.',
+    'This is another paragraph'
+  ],
+  caseworkerIntro: [
+    'This is an email for the caseworker',
+    'This is another paragraph'
+  ],
+  customerOutro: [
+    'Thanks for reading.',
+    'This is another paragraph'
+  ]
 };

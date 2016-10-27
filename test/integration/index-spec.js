@@ -45,7 +45,7 @@ describe('HOF Emailer', () => {
       });
 
       it('contains both customer intro paragraphs', () => {
-        config.intro.customer.forEach(paragraph => {
+        config.customerIntro.forEach(paragraph => {
           (output.indexOf(paragraph) > -1).should.be.true;
         });
       });
@@ -96,8 +96,8 @@ describe('HOF Emailer', () => {
 
         it('contains the correct amount of rows (fields + intro + outro)', () => {
           const fieldRows = _.flatten(_.map(data, 'fields')).length;
-          const introRows = config.intro.customer.length;
-          const outroRows = config.outro.customer.length;
+          const introRows = config.customerIntro.length;
+          const outroRows = config.customerOutro.length;
           rows.length.should.be.equal(fieldRows + introRows + outroRows);
         });
       });
