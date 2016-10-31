@@ -1,6 +1,7 @@
 'use strict';
 
 const proxyquire = require('proxyquire');
+const _ = require('lodash');
 
 describe('Emailer', () => {
   let EmailerService;
@@ -59,10 +60,60 @@ describe('Emailer', () => {
           user: 'user',
           pass: 'pass'
         },
-        secure: true
+        secure: true,
+        transport: undefined
       };
       emailerService = new EmailerService(options);
-      smtpTransport.should.have.been.calledWith(options);
+      smtpTransport.should.have.been.calledWith(_.omit(options, 'transport'));
+    });
+
+    it('passes transport option', () => {
+      const transport = sinon.stub().returns('test');
+      const options = {
+        host: '127.0.0.1',
+        port: '8080',
+        ignoreTLS: true,
+        auth: {
+          user: 'user',
+          pass: 'pass'
+        },
+        secure: true,
+        transport: transport
+      };
+      emailerService = new EmailerService(options);
+      transport.should.have.been.calledWith(_.omit(options, 'transport'));
+    });
+
+    it('passes and assigns transportOpts to transport options', () => {
+      const transport = sinon.stub().returns('test');
+      const options = {
+        host: '127.0.0.1',
+        port: '8080',
+        ignoreTLS: true,
+        auth: {
+          user: 'user',
+          pass: 'pass'
+        },
+        secure: true,
+        transport: transport,
+        transportOpts: {
+          foo: 'bar'
+        }
+      };
+      const assignedOptions = {
+        host: '127.0.0.1',
+        port: '8080',
+        ignoreTLS: true,
+        auth: {
+          user: 'user',
+          pass: 'pass'
+        },
+        secure: true,
+        transport: transport,
+        foo: 'bar'
+      };
+      emailerService = new EmailerService(options);
+      transport.should.have.been.calledWith(_.omit(assignedOptions, 'transport'));
     });
 
     it('passes transport return value to nodemailer', () => {
