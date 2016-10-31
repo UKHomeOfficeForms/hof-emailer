@@ -78,6 +78,18 @@ describe('Emailer', () => {
     });
   });
 
+  describe('transport', () => {
+    it('has a getter and a setter', () => {
+      emailerService = new EmailerService({
+        host: '127.0.0.1',
+        port: '8080'
+      });
+      emailerService.transport.should.be.equal(smtpTransport);
+      emailerService.transport = stubTransport;
+      emailerService.transport.should.be.equal(stubTransport);
+    });
+  });
+
   describe('sendEmail', () => {
     beforeEach(() => {
       const options = {
