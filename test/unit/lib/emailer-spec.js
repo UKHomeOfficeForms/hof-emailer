@@ -6,8 +6,8 @@ describe('Emailer', () => {
   let EmailerService;
   let emailerService;
   let nodemailer;
-  let stubTransport;
   let smtpTransport;
+  let sesTransport;
 
   beforeEach(() => {
     nodemailer = {
@@ -15,12 +15,16 @@ describe('Emailer', () => {
         sendMail: sinon.stub()
       })
     };
-    stubTransport = sinon.stub();
-    smtpTransport = sinon.stub();
+
+    smtpTransport = sinon.stub().returns({transport: sinon.stub()});
+    sesTransport = sinon.stub().returns({transport: sinon.stub()});
+
     EmailerService = proxyquire('../../../lib/emailer', {
       nodemailer,
-      'nodemailer-stub-transport': stubTransport,
-      'nodemailer-smtp-transport': smtpTransport
+      '../transports': {
+        smtp: smtpTransport,
+        ses: sesTransport
+      }
     });
   });
 
@@ -32,22 +36,6 @@ describe('Emailer', () => {
       };
       emailerService = new EmailerService(options);
       emailerService.options.should.be.equal(options);
-    });
-
-    it('sets transport to stubTransport if host and port are empty strings', () => {
-      emailerService = new EmailerService({
-        host: '',
-        port: ''
-      });
-      emailerService.transport.should.be.equal(stubTransport);
-    });
-
-    it('sets transport to smtpTransport if host and port are set', () => {
-      emailerService = new EmailerService({
-        host: '127.0.0.1',
-        port: '8080'
-      });
-      emailerService.transport.should.be.equal(smtpTransport);
     });
 
     it('passes options to transport', () => {
@@ -65,16 +53,30 @@ describe('Emailer', () => {
       smtpTransport.should.have.been.calledWith(options);
     });
 
-    it('passes transport return value to nodemailer', () => {
+    it('passes options to ses transport function if transport option is \'ses\'', () => {
       const options = {
-        some: 'options'
+        transportType: 'ses',
+        accessKeyId: 'foo',
+        secretAccessKey: 'bar'
       };
-      smtpTransport.returns(options);
+
+      emailerService = new EmailerService(options);
+      sesTransport.should.have.been.calledWith(options);
+    });
+
+    it('passes transport return value to nodemailer', () => {
+      const settings = {
+        transport: sinon.stub(),
+        options: {
+          some: 'options'
+        }
+      };
+      smtpTransport.returns(settings);
       emailerService = new EmailerService({
         host: 'localhost',
         port: '8080'
       });
-      nodemailer.createTransport.should.have.been.calledWith(options);
+      nodemailer.createTransport.should.have.been.calledWith(settings.transport(settings.options));
     });
   });
 
