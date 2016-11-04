@@ -1,7 +1,6 @@
 'use strict';
 
 const path = require('path');
-const _ = require('lodash');
 const data = require('../../fixtures/data');
 const proxyquire = require('proxyquire');
 
@@ -65,24 +64,6 @@ describe('Email Service', () => {
     it('doesn\'t call _includeDate if options.includeDate is false', () => {
       emailService = new EmailService({data, includeDate: false});
       EmailService.prototype._includeDate.should.not.have.been.called;
-    });
-
-    it('plucks emailer options from passed options', () => {
-      const emailerOptions = {
-        data,
-        host: 'localhost',
-        port: 8080,
-        ignoreTLS: true,
-        auth: {
-          user: 'user',
-          pass: 'pass'
-        },
-        secure: true,
-        from: 'sterling@archer.com',
-        replyTo: 'reply@example.com'
-      };
-      emailService = new EmailService(emailerOptions);
-      emailService.emailerOptions.should.be.eql(_.omit(emailerOptions, 'data'));
     });
 
     describe('public methods', () => {
