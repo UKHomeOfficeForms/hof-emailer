@@ -1,6 +1,7 @@
 'use strict';
 
 const transport = require('nodemailer-ses-transport');
+const stub = require('nodemailer-stub-transport');
 
 module.exports = (options) => {
 
@@ -12,6 +13,10 @@ module.exports = (options) => {
     accessKeyId: options.accessKeyId,
     secretAccessKey: options.secretAccessKey
   };
+
+  if (!opts.accessKeyId && !opts.secretAccessKey) {
+    settings.transport = stub;
+  }
 
   if (options.sessionToken) {
     opts.sessionToken = options.sessionToken;

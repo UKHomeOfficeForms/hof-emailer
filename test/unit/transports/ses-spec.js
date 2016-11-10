@@ -6,14 +6,17 @@ const _ = require('lodash');
 describe('transports/ses', () => {
 
   let nodemailerSesTransport;
+  let nodemailerStubTransport;
   let sesTransport;
 
   beforeEach(() => {
 
     nodemailerSesTransport = sinon.stub();
+    nodemailerStubTransport = sinon.stub();
 
     sesTransport = proxyquire('../../../transports/ses', {
       'nodemailer-ses-transport': nodemailerSesTransport,
+      'nodemailer-stub-transport': nodemailerStubTransport
     });
   });
 
@@ -23,6 +26,14 @@ describe('transports/ses', () => {
       secretAccessKey: 'bar'
     };
     sesTransport(options).transport.should.equal(nodemailerSesTransport);
+  });
+
+  it('returns the stub transport if no auth creds are passed', () => {
+    const options = {
+      host: '',
+      port: ''
+    };
+    sesTransport(options).transport.should.equal(nodemailerStubTransport);
   });
 
   it('returns options that are passed', () => {
