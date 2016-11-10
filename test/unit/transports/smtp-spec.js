@@ -43,7 +43,7 @@ describe('transports/smtp', () => {
         user: 'foo',
         pass: 'bar'
       },
-      secure: false,
+      secure: true,
       ignoreTLS: false
     };
     smtpTransport(options).options.should.deep.equal(options);
@@ -57,6 +57,32 @@ describe('transports/smtp', () => {
     smtpTransport(options).options.should.have.property('ignoreTLS').and.equal(false);
     smtpTransport(options).options.should.have.property('secure').and.equal(true);
     smtpTransport(options).options.should.not.have.property('auth');
+  });
+
+  it('secure option defaults to true', () => {
+    const options = {
+      host: '1.1.1.1',
+      port: '8080',
+      auth: {
+        user: 'foo',
+        pass: 'bar'
+      },
+      ignoreTLS: false
+    };
+    smtpTransport(options).options.secure.should.equal(true);
+  });
+
+  it('ignoreTLS option defaults to false', () => {
+    const options = {
+      host: '1.1.1.1',
+      port: '8080',
+      auth: {
+        user: 'foo',
+        pass: 'bar'
+      },
+      secure: true
+    };
+    smtpTransport(options).options.ignoreTLS.should.equal(false);
   });
 
 });
