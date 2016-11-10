@@ -16,26 +16,24 @@ module.exports = (options) => {
 
   if (!opts.accessKeyId && !opts.secretAccessKey) {
     settings.transport = stub;
-  }
+  } else {
+    opts.region = options.region || 'eu-west-1';
 
-  if (options.sessionToken) {
-    opts.sessionToken = options.sessionToken;
-  }
+    if (options.sessionToken) {
+      opts.sessionToken = options.sessionToken;
+    }
 
-  if (options.region) {
-    opts.region = options.region;
-  }
+    if (options.httpOptions) {
+      opts.httpOptions = options.httpOptions;
+    }
 
-  if (options.httpOptions) {
-    opts.httpOptions = options.httpOptions;
-  }
+    if (options.rateLimit !== undefined) {
+      opts.rateLimit = options.rateLimit;
+    }
 
-  if (options.rateLimit !== undefined) {
-    opts.rateLimit = options.rateLimit;
-  }
-
-  if (options.maxConnections !== undefined) {
-    opts.maxConnections = options.maxConnections;
+    if (options.maxConnections !== undefined) {
+      opts.maxConnections = options.maxConnections;
+    }
   }
 
   settings.options = opts;

@@ -40,7 +40,7 @@ If `host` and `port` are not set, transport used is [nodemailer-stub-transport](
 - `accessKeyId` <String>: AWS accessKeyId. Required.
 - `secretAccessKey` <String>: AWS accessKeyId. Required.
 - `sessionToken` <String>
-- `region` <String>
+- `region` <String>. Defaults to 'eu-west-1'.
 - `httpOptions` <String>
 - `rateLimit` <String>
 - `maxConnections` <String>
