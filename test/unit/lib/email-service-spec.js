@@ -131,7 +131,7 @@ describe('Email Service', () => {
 
         it('logs to the console when an email is successfully sent', done => {
           emailService.sendEmail('sterling@archer.com').then(() => {
-            console.info.should.have.been.calledWithExactly('Email sent to', 'sterling@archer.com', 'info');
+            console.info.should.have.been.calledWithExactly('Email sent');
             done();
           });
         });
@@ -147,8 +147,8 @@ describe('Email Service', () => {
         it('logs errors to the console', done => {
           const err = new Error('oops');
           emailService.emailer.sendEmail.yields(err);
-          emailService.sendEmail('sterling@archer.com').catch(error => {
-            console.error.should.have.been.calledWithExactly('Error sending email to:', 'sterling@archer.com', error);
+          emailService.sendEmail('sterling@archer.com').catch(() => {
+            console.error.should.have.been.calledWithExactly('Error sending email');
             done();
           });
         });
