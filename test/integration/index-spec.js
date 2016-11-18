@@ -47,6 +47,10 @@ describe('HOF Emailer', () => {
         });
       });
 
+      it('contains the customer subject', () => {
+        output.should.contain(config.subject.customer);
+      });
+
       it('contains all labels and values from passed config', () => {
         const formatted = _.map(_.flatten(_.map(data, 'fields')), field => `${field.label}: ${field.value}`);
         formatted.forEach(line => (output.indexOf(line) > -1).should.be.true);
