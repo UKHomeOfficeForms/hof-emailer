@@ -100,12 +100,11 @@ describe('Email Service', () => {
           emailService.sendEmails().should.be.an.instanceOf(Promise);
         });
 
-        it('resolves once sendEmail has resolved twice', done => {
+        it('resolves once sendEmail has resolved twice', () => {
           EmailService.prototype.sendEmail.returns(new Promise(resolve => resolve()));
-          emailService.sendEmails().then(() => {
-            EmailService.prototype.sendEmail.should.have.been.calledTwice;
-            done();
-          });
+          return emailService.sendEmails().then(() =>
+            EmailService.prototype.sendEmail.should.have.been.calledTwice
+          );
         });
       });
 
@@ -133,60 +132,53 @@ describe('Email Service', () => {
           emailService.sendEmail().should.be.an.instanceOf(Promise);
         });
 
-        it('calls _renderTemplate twice', done => {
-          emailService.sendEmail().then(() => {
-            EmailService.prototype._renderTemplate.should.have.been.calledTwice;
-            done();
-          });
-        });
+        it('calls _renderTemplate twice', () =>
+          emailService.sendEmail().then(() =>
+            EmailService.prototype._renderTemplate.should.have.been.calledTwice
+          )
+        );
 
-        it('calls emailer.sendEmail passing to address, customer subject and rendered templates', done => {
-          emailService.sendEmail('sterling@archer.com', 'customer').then(() => {
+        it('calls emailer.sendEmail passing to address, customer subject and rendered templates', () =>
+          emailService.sendEmail('sterling@archer.com', 'customer').then(() =>
             emailService.emailer.sendEmail.should.have.been.calledOnce
-              .and.calledWith('sterling@archer.com', 'A customer email', ['html', 'html']);
-            done();
-          });
-        });
+              .and.calledWith('sterling@archer.com', 'A customer email', ['html', 'html'])
+          )
+        );
 
-        it('calls emailer.sendEmail passing to address, caseworker subject and rendered templates', done => {
-          emailService.sendEmail('sterling@archer.com', 'caseworker').then(() => {
+        it('calls emailer.sendEmail passing to address, caseworker subject and rendered templates', () =>
+          emailService.sendEmail('sterling@archer.com', 'caseworker').then(() =>
             emailService.emailer.sendEmail.should.have.been.calledOnce
-              .and.calledWith('sterling@archer.com', 'A caseworker email', ['html', 'html']);
-            done();
-          });
-        });
+              .and.calledWith('sterling@archer.com', 'A caseworker email', ['html', 'html'])
+          )
+        );
 
-        it('logs to the console when an email is successfully sent', done => {
-          emailService.sendEmail('sterling@archer.com').then(() => {
-            console.info.should.have.been.calledWithExactly('Email sent');
-            done();
-          });
-        });
+        it('logs to the console when an email is successfully sent', () =>
+          emailService.sendEmail('sterling@archer.com').then(() =>
+            console.info.should.have.been.calledWithExactly('Email sent')
+          )
+        );
 
-        it('catches errors bubbled from emailer', done => {
+        it('catches errors bubbled from emailer', () => {
           emailService.emailer.sendEmail.yields(new Error('oops'));
-          emailService.sendEmail('sterling@archer.com').catch(err => {
-            err.should.be.an.instanceOf(Error);
-            done();
-          });
+          return emailService.sendEmail('sterling@archer.com').catch(err =>
+            err.should.be.an.instanceOf(Error)
+          );
         });
 
-        it('logs errors to the console', done => {
+        it('logs errors to the console', () => {
           const err = new Error('oops');
           emailService.emailer.sendEmail.yields(err);
-          emailService.sendEmail('sterling@archer.com').catch(() => {
-            console.error.should.have.been.calledWithExactly('Error sending email');
-            done();
-          });
+          return emailService.sendEmail('sterling@archer.com').catch(() =>
+            console.error.should.have.been.calledWithExactly('Error sending email')
+          );
         });
 
-        it('catches errors bubbled from _renderTemplate', done => {
+        it('catches errors bubbled from _renderTemplate', () => {
           const err = new Error('oops');
           EmailService.prototype._renderTemplate.returns(new Promise((resolve, reject) => reject(err)));
-          emailService.sendEmail('sterling@archer.com').catch(error => {
-            error.should.be.an.instanceOf(Error);
-            done();
-          });
+          return emailService.sendEmail('sterling@archer.com').catch(error =>
+            error.should.be.an.instanceOf(Error)
+          );
         });
       });
     });
@@ -320,40 +312,36 @@ describe('Email Service', () => {
           emailService._renderTemplate().should.be.an.instanceOf(Promise);
         });
 
-        it('calls the render method of the app', done => {
-          emailService._renderTemplate().then(() => {
-            emailService.app.render.should.have.been.calledOnce;
-            done();
-          });
-        });
+        it('calls the render method of the app', () =>
+          emailService._renderTemplate().then(() =>
+            emailService.app.render.should.have.been.calledOnce
+          )
+        );
 
-        it('passes template, recipient and data to the render method of the app', done => {
+        it('passes template, recipient and data to the render method of the app', () => {
           const dummyData = {};
-          emailService._renderTemplate('template', 'customer', dummyData).then(() => {
+          return emailService._renderTemplate('template', 'customer', dummyData).then(() =>
             emailService.app.render.should.have.been.calledWith('template', {
               data: dummyData,
               intro: undefined,
               outro: undefined,
               partials: undefined
-            });
-            done();
-          });
+            })
+          );
         });
 
-        it('resolves with html on successful calls', done => {
+        it('resolves with html on successful calls', () => {
           emailService.app.render.yields(null, '<div>html</div>');
-          emailService._renderTemplate().then(html => {
-            html.should.be.equal('<div>html</div>');
-            done();
-          });
+          return emailService._renderTemplate().then(html =>
+            html.should.be.equal('<div>html</div>')
+          );
         });
 
-        it('rejects with an error on unsuccessful calls', done => {
+        it('rejects with an error on unsuccessful calls', () => {
           emailService.app.render.yields(new Error('oops'));
-          emailService._renderTemplate().catch(err => {
-            err.should.be.an.instanceOf(Error);
-            done();
-          });
+          return emailService._renderTemplate().catch(err =>
+            err.should.be.an.instanceOf(Error)
+          );
         });
       });
     });

@@ -16,33 +16,30 @@ describe('HOF Emailer', () => {
     emailService = new EmailService(Object.assign({}, config, {data}));
   });
 
-  it('sends emails', done => {
+  it('sends emails', () =>
     emailService.sendEmails().then(info => {
       info[0].response.should.be.an.instanceOf(Buffer);
       info[1].response.should.be.an.instanceOf(Buffer);
-      done();
-    });
-  });
+    })
+  );
 
-  it('contains data passed', done => {
+  it('contains data passed', () =>
     emailService.sendEmails().then(info => {
       const response = info[0].response.toString('utf-8');
 
       response.should.contain('123 Example Street, Croydon');
       response.should.contain('Some text to find from within the email');
-      done();
-    });
-  });
+    })
+  );
 
   describe('Template Rendering', () => {
     describe('Raw Template', () => {
       let output;
-      beforeEach(done => {
+      beforeEach(() =>
         emailService._renderTemplate('raw', 'customer', emailService.data).then(html => {
           output = html.trim().split('\n').map(line => line.trim());
-          done();
-        });
-      });
+        })
+      );
 
       it('contains both customer intro paragraphs', () => {
         config.customerIntro.forEach(paragraph => {
@@ -58,12 +55,11 @@ describe('HOF Emailer', () => {
 
     describe('Formatted Email', () => {
       let document;
-      beforeEach(done => {
+      beforeEach(() =>
         emailService._renderTemplate('formatted', 'customer', emailService.data).then(html => {
           document = parser.parseFromString(html, 'text/html');
-          done();
-        });
-      });
+        })
+      );
 
       describe('DocumentType', () => {
         let doctype;
