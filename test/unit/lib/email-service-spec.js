@@ -66,6 +66,22 @@ describe('Email Service', () => {
       EmailService.prototype._includeDate.should.not.have.been.called;
     });
 
+    it('sets subject to email-service instance if passed object', () => {
+      const subject = {
+        customer: '',
+        caseworker: ''
+      };
+      emailService = new EmailService({data, subject});
+      emailService.subject.should.be.equal(subject);
+    });
+
+    it('sets customer and caseworker subject to email-service instance if passed string', () => {
+      const subject = 'a subject';
+      emailService = new EmailService({data, subject});
+      emailService.subject.customer.should.be.equal(subject);
+      emailService.subject.caseworker.should.be.equal(subject);
+    });
+
     describe('public methods', () => {
       beforeEach(() => {
         emailService = new EmailService({data});
@@ -95,7 +111,10 @@ describe('Email Service', () => {
 
       describe('sendEmail()', () => {
         beforeEach(() => {
-          emailService.subject = 'An Email';
+          emailService.subject = {
+            customer: 'A customer email',
+            caseworker: 'A caseworker email'
+          };
           emailService.emailer = {
             sendEmail: sinon.stub().yields(null, 'info')
           };
@@ -121,10 +140,18 @@ describe('Email Service', () => {
           });
         });
 
-        it('calls emailer.sendEmail passing to address, subject and rendered templates', done => {
-          emailService.sendEmail('sterling@archer.com').then(() => {
+        it('calls emailer.sendEmail passing to address, customer subject and rendered templates', done => {
+          emailService.sendEmail('sterling@archer.com', 'customer').then(() => {
             emailService.emailer.sendEmail.should.have.been.calledOnce
-              .and.calledWith('sterling@archer.com', 'An Email', ['html', 'html']);
+              .and.calledWith('sterling@archer.com', 'A customer email', ['html', 'html']);
+            done();
+          });
+        });
+
+        it('calls emailer.sendEmail passing to address, caseworker subject and rendered templates', done => {
+          emailService.sendEmail('sterling@archer.com', 'caseworker').then(() => {
+            emailService.emailer.sendEmail.should.have.been.calledOnce
+              .and.calledWith('sterling@archer.com', 'A caseworker email', ['html', 'html']);
             done();
           });
         });
