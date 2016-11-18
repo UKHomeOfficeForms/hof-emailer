@@ -306,6 +306,10 @@ describe('Email Service', () => {
           emailService.app = {
             render: sinon.stub().yields()
           };
+          emailService.subject = {
+            customer: 'customer subject',
+            caseworker: 'caseworker subject'
+          };
         });
 
         it('returns a promise', () => {
@@ -318,12 +322,13 @@ describe('Email Service', () => {
           )
         );
 
-        it('passes template, recipient and data to the render method of the app', () => {
+        it('passes template, subject, recipient and data to the render method of the app', () => {
           const dummyData = {};
           return emailService._renderTemplate('template', 'customer', dummyData).then(() =>
             emailService.app.render.should.have.been.calledWith('template', {
               data: dummyData,
               intro: undefined,
+              subject: 'customer subject',
               outro: undefined,
               partials: undefined
             })

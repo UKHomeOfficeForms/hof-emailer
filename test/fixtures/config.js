@@ -13,7 +13,10 @@ module.exports = {
   groupBySection: true,
   customerEmail: 'customer@hotmail.com',
   caseworker: 'caseworker@digital.homeoffice.gov.uk',
-  subject: 'GRO Email',
+  subject: {
+    customer: 'GRO Email - customer',
+    caseworker: 'GRO Email - caseworker'
+  },
   customerIntro: [
     'This an email for the customer.',
     'This is another paragraph'
