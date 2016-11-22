@@ -68,8 +68,8 @@ describe('Email Service', () => {
 
     it('sets subject to email-service instance if passed object', () => {
       const subject = {
-        customer: '',
-        caseworker: ''
+        customer: 'foo',
+        caseworker: 'bar'
       };
       emailService = new EmailService({data, subject});
       emailService.subject.should.be.equal(subject);
@@ -84,7 +84,11 @@ describe('Email Service', () => {
 
     describe('public methods', () => {
       beforeEach(() => {
-        emailService = new EmailService({data});
+        emailService = new EmailService({
+          data,
+          customerEmail: 'customer@hotmail.com',
+          caseworker: 'caseworker@domain.com'
+        });
       });
 
       describe('sendEmails()', () => {
@@ -100,10 +104,21 @@ describe('Email Service', () => {
           emailService.sendEmails().should.be.an.instanceOf(Promise);
         });
 
-        it('resolves once sendEmail has resolved twice', () => {
+        it('resolves once sendEmail has resolved all promises', () => {
           EmailService.prototype.sendEmail.returns(new Promise(resolve => resolve()));
           return emailService.sendEmails().then(() =>
             EmailService.prototype.sendEmail.should.have.been.calledTwice
+          );
+        });
+
+        it('does not try to send an email to an undefined customer address', () => {
+          emailService = new EmailService({
+            data,
+            customerEmail: ''
+          });
+          EmailService.prototype.sendEmail.returns(new Promise(resolve => resolve()));
+          return emailService.sendEmails().then(() =>
+            EmailService.prototype.sendEmail.should.have.been.calledOnce
           );
         });
       });
