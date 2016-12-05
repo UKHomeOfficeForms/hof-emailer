@@ -82,6 +82,12 @@ describe('Email Service', () => {
       emailService.subject.caseworker.should.be.equal(subject);
     });
 
+    it('sets the customViews to email-service instance if passed path string', () => {
+      const customViews = '/path/to/custom/views';
+      emailService = new EmailService({data, customViews});
+      emailService.viewsDir.should.have.length(2);
+    });
+
     describe('public methods', () => {
       beforeEach(() => {
         emailService = new EmailService({
@@ -114,7 +120,19 @@ describe('Email Service', () => {
         it('does not try to send an email to an undefined customer address', () => {
           emailService = new EmailService({
             data,
-            customerEmail: ''
+            customerEmail: '',
+            caseworker: 'caseworker@digital.homeoffice.gov.uk'
+          });
+          EmailService.prototype.sendEmail.returns(new Promise(resolve => resolve()));
+          return emailService.sendEmails().then(() =>
+            EmailService.prototype.sendEmail.should.have.been.calledOnce
+          );
+        });
+
+        it('does not try to send an email to an undefined caseworker address', () => {
+          emailService = new EmailService({
+            data,
+            customerEmail: 'customer@hotmail.com'
           });
           EmailService.prototype.sendEmail.returns(new Promise(resolve => resolve()));
           return emailService.sendEmails().then(() =>
@@ -234,7 +252,7 @@ describe('Email Service', () => {
         });
 
         it('sets the app view property to the views path', () => {
-          const viewsPath = path.resolve(__dirname, '../../../views');
+          const viewsPath = [path.resolve(__dirname, '../../../views')];
           emailService.app.set.secondCall.should.have.been.calledWithExactly('views', viewsPath);
         });
 
