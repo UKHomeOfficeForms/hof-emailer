@@ -90,7 +90,9 @@ describe('Emailer', () => {
           user: 'user',
           pass: 'pass'
         },
-        secure: true
+        secure: true,
+        from: 'my-from-address@somewhere.com',
+        replyTo: 'reply-to@somewhere.com'
       };
       emailerService = new EmailerService(options);
     });
@@ -106,6 +108,40 @@ describe('Emailer', () => {
       emailerService.sendEmail(null, 'An Email', []);
       emailerService.emailer.sendMail.should.have.been.calledWith(sinon.match({
         subject: 'An Email'
+      }));
+    });
+
+    it('passes from address from options', () => {
+      emailerService.sendEmail(null, null, []);
+      emailerService.emailer.sendMail.should.have.been.calledWith(sinon.match({
+        from: 'my-from-address@somewhere.com'
+      }));
+    });
+
+    it('passes replyTo address from options', () => {
+      emailerService.sendEmail(null, null, []);
+      emailerService.emailer.sendMail.should.have.been.calledWith(sinon.match({
+        replyTo: 'reply-to@somewhere.com'
+      }));
+    });
+
+    it('replyTo uses from address if no replyTo is present in the options', () => {
+      const options = {
+        host: '127.0.0.1',
+        port: '8080',
+        ignoreTLS: true,
+        auth: {
+          user: 'user',
+          pass: 'pass'
+        },
+        secure: true,
+        from: 'my-from-address@somewhere.com'
+      };
+      emailerService = new EmailerService(options);
+      emailerService.sendEmail(null, null, []);
+      emailerService.emailer.sendMail.should.have.been.calledWith(sinon.match({
+        replyTo: 'my-from-address@somewhere.com',
+        from: 'my-from-address@somewhere.com'
       }));
     });
   });
