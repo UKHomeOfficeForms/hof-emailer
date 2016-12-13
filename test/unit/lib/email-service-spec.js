@@ -49,7 +49,7 @@ describe('Email Service', () => {
     });
 
     it('calls _includeDate', () => {
-      emailService = new EmailService({data});
+      emailService = new EmailService({data, includeInEmail: true});
       EmailService.prototype._includeDate.should.have.been.calledOnce;
     });
 
@@ -58,7 +58,7 @@ describe('Email Service', () => {
     });
 
     it('throws an error if data not provided', () => {
-      chai.expect(() => new EmailService({})).to.throw(/^No data provided$/);
+      chai.expect(() => new EmailService({includeInEmail: true})).to.throw(/^No data provided$/);
     });
 
     it('doesn\'t call _includeDate if options.includeDate is false', () => {

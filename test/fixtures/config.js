@@ -9,6 +9,7 @@ module.exports = {
     pass: 'pass'
   },
   secure: false,
+  includeInEmail: true,
   from: 'sterling@archer.com',
   groupBySection: true,
   customerEmail: 'customer@hotmail.com',
