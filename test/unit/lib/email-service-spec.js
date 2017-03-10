@@ -103,6 +103,22 @@ describe('Email Service', () => {
         });
     });
 
+    it('uses no layout file if layout option is set to false', () => {
+      emailer = new EmailService({
+        layout: false
+      });
+      const expected = 'email body';
+      return emailer.send('test@example.com', 'email body', 'email subject')
+        .then(() => {
+          emailer.emailer.send.should.have.been.calledOnce;
+          emailer.emailer.send.should.have.been.calledWithExactly(
+            'test@example.com',
+            'email subject',
+            expected
+          );
+        });
+    });
+
     it('rejects if layout template cannot be found', () => {
       const err = new Error('template not found');
       fs.readFile.withArgs('/path/to/my/layout')
