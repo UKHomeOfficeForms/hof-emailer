@@ -5,84 +5,124 @@ const proxyquire = require('proxyquire');
 describe('transports/smtp', () => {
 
   let nodemailerSmtpTransport;
-  let nodemailerStubTransport;
   let smtpTransport;
 
   beforeEach(() => {
 
     nodemailerSmtpTransport = sinon.stub();
-    nodemailerStubTransport = sinon.stub();
 
     smtpTransport = proxyquire('../../../transports/smtp', {
-      'nodemailer-smtp-transport': nodemailerSmtpTransport,
-      'nodemailer-stub-transport': nodemailerStubTransport
+      'nodemailer-smtp-transport': nodemailerSmtpTransport
     });
   });
 
-  it('returns the smtp transport', () => {
+  it('returns an instance of smtp transport', () => {
+    const transport = { transport: 'smtp' };
+    nodemailerSmtpTransport.returns(transport);
     const options = {
-      host: '1.1.1.1',
-      port: '8080'
+      host: 'my.smtp.host',
+      port: 25
     };
-    smtpTransport(options).transport.should.equal(nodemailerSmtpTransport);
+    const result = smtpTransport(options);
+    nodemailerSmtpTransport.should.have.been.calledWith(sinon.match(options));
+    result.should.equal(result);
   });
 
-  it('returns the stub transport if no host and port are passed', () => {
-    const options = {
-      host: '',
-      port: ''
+  it('throws if either host or port are not passed', () => {
+    const make = opts => {
+      return () => smtpTransport(opts);
     };
-    smtpTransport(options).transport.should.equal(nodemailerStubTransport);
+    make({}).should.throw();
+    make({ host: 'my.smtp.host' }).should.throw();
+    make({ port: 25 }).should.throw();
   });
 
-  it('returns options that are passed', () => {
+  it('sets ignoreTLS option to false by default', () => {
     const options = {
-      host: '1.1.1.1',
-      port: '8080',
-      auth: {
-        user: 'foo',
-        pass: 'bar'
-      },
-      secure: true,
+      host: 'my.smtp.host',
+      port: 25
+    };
+    smtpTransport(options);
+    nodemailerSmtpTransport.should.have.been.calledWith(sinon.match({
       ignoreTLS: false
-    };
-    smtpTransport(options).options.should.deep.equal(options);
+    }));
   });
 
-  it('returns implicit values only for boolean options that are not passed', () => {
+  it('sets ignoreTLS option to true if it is set to exactly true', () => {
     const options = {
-      host: '1.1.1.1',
-      port: '8080',
+      host: 'my.smtp.host',
+      port: 25,
+      ignoreTLS: true
     };
-    smtpTransport(options).options.should.have.property('ignoreTLS').and.equal(false);
-    smtpTransport(options).options.should.have.property('secure').and.equal(true);
-    smtpTransport(options).options.should.not.have.property('auth');
+    smtpTransport(options);
+    nodemailerSmtpTransport.should.have.been.calledWith(sinon.match({
+      ignoreTLS: true
+    }));
   });
 
-  it('secure option defaults to true', () => {
+  it('sets ignoreTLS option to false if it is set to any other value', () => {
     const options = {
-      host: '1.1.1.1',
-      port: '8080',
-      auth: {
-        user: 'foo',
-        pass: 'bar'
-      },
+      host: 'my.smtp.host',
+      port: 25,
+      ignoreTLS: 1
+    };
+    smtpTransport(options);
+    nodemailerSmtpTransport.should.have.been.calledWith(sinon.match({
       ignoreTLS: false
-    };
-    smtpTransport(options).options.secure.should.equal(true);
+    }));
   });
 
-  it('ignoreTLS option defaults to false', () => {
+  it('sets secure option to true by default', () => {
     const options = {
-      host: '1.1.1.1',
-      port: '8080',
-      auth: {
-        user: 'foo',
-        pass: 'bar'
-      },
+      host: 'my.smtp.host',
+      port: 25
+    };
+    smtpTransport(options);
+    nodemailerSmtpTransport.should.have.been.calledWith(sinon.match({
       secure: true
+    }));
+  });
+
+  it('sets secure option to true if it is set to exactly false', () => {
+    const options = {
+      host: 'my.smtp.host',
+      port: 25,
+      secure: false
     };
-    smtpTransport(options).options.ignoreTLS.should.equal(false);
+    smtpTransport(options);
+    nodemailerSmtpTransport.should.have.been.calledWith(sinon.match({
+      secure: false
+    }));
+  });
+
+  it('sets secure option to true if it is set to any other value', () => {
+    const options = {
+      host: 'my.smtp.host',
+      port: 25,
+      secure: null
+    };
+    smtpTransport(options);
+    nodemailerSmtpTransport.should.have.been.calledWith(sinon.match({
+      secure: true
+    }));
+  });
+
+  it('sets auth option if it has user and pass defined', () => {
+    const options = {
+      host: 'my.smtp.host',
+      port: 25,
+      auth: {
+        user: 'user',
+        pass: 'pass'
+      }
+    };
+    smtpTransport(options);
+    nodemailerSmtpTransport.should.have.been.calledWith(sinon.match({
+      auth: {
+        user: 'user',
+        pass: 'pass'
+      }
+    }));
   });
 
 });

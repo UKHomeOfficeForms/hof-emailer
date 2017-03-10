@@ -10,17 +10,34 @@ $ npm install hof-emailer --save
 
 ## Usage
 
-HOF Emailer exports a class which should be initialised with an options object containing the following config, which is used to build the email content.
+```js
+// first create an emailer instance
+const Emailer = require('hof-emailer');
+const emailer = new Emailer({
+  from: 'sender@example.com',
+  transport: 'smtp',
+  transportOptions: {
+    host: 'my.smtp.host',
+    port: 25
+  }
+});
 
-* `steps` <Object>: your step config
-* `fields` <Object>: your field config
-* `data` <Object>: a hash of field names and values
-* `groupBySection` <Boolean>: group fields into sections
-* `subject` <String>: the email subject
+// then you can use your emailer to send emails
+const to = 'recipient@example.com';
+const body = 'This is the email body';
+const subject = 'Important email!'
+emailer.send(to, body, subject)
+  .then(() => {
+    console.log(`Email sent to ${to}!`);
+  });
+```
 
 ## Options
 
-- `transportType`: <String>: Defaults to 'smtp' - nodemailer-smtp-transport. Also available is 'ses' - nodemailer-ses-transport.
+- `from`: <String>: address to send emails from. Required.
+- `transport`: <String>: Defaults to 'smtp' - nodemailer-smtp-transport. Also available is 'ses' - nodemailer-ses-transport.
+- `transportOptions`: <Object>: Set the options for the chosen transport, as defined below. Required.
+- `layout`: <String>: Optional path to use a custom layout for email content.
 
 ### smtp options
 [nodemailer-smtp-transport](https://github.com/andris9/nodemailer-smtp-transport)
@@ -31,8 +48,6 @@ HOF Emailer exports a class which should be initialised with an options object c
 - `secure` <Boolean>: Defaults to true.
 - `auth.user` <String>: Mailserver authorisation username.
 - `auth.pass` <String>: Mailserver authorisation password.
-
-If `host` and `port` are not set, transport used is [nodemailer-stub-transport](https://github.com/andris9/nodemailer-stub-transport).
 
 ### ses (AWS Simple Email Server API) options
 [nodemailer-ses-transport](https://github.com/andris9/nodemailer-ses-transport)
@@ -45,4 +60,3 @@ If `host` and `port` are not set, transport used is [nodemailer-stub-transport](
 - `rateLimit` <String>
 - `maxConnections` <String>
 
-If `accessKeyId` and `secretAccessKey` are not set, transport used is [nodemailer-stub-transport](https://github.com/andris9/nodemailer-stub-transport).
