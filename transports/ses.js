@@ -1,42 +1,38 @@
 'use strict';
 
-const transport = require('nodemailer-ses-transport');
-const stub = require('nodemailer-stub-transport');
+const ses = require('nodemailer-ses-transport');
 
 module.exports = (options) => {
 
-  const settings = {
-    transport: transport
-  };
+  if (!options.accessKeyId) {
+    throw new Error('Required option `accessKeyId` not found.');
+  }
+  if (!options.secretAccessKey) {
+    throw new Error('Required option `secretAccessKey` not found.');
+  }
 
   const opts = {
     accessKeyId: options.accessKeyId,
     secretAccessKey: options.secretAccessKey
   };
 
-  if (!opts.accessKeyId && !opts.secretAccessKey) {
-    settings.transport = stub;
-  } else {
-    opts.region = options.region || 'eu-west-1';
+  opts.region = options.region || 'eu-west-1';
 
-    if (options.sessionToken) {
-      opts.sessionToken = options.sessionToken;
-    }
-
-    if (options.httpOptions) {
-      opts.httpOptions = options.httpOptions;
-    }
-
-    if (options.rateLimit !== undefined) {
-      opts.rateLimit = options.rateLimit;
-    }
-
-    if (options.maxConnections !== undefined) {
-      opts.maxConnections = options.maxConnections;
-    }
+  if (options.sessionToken) {
+    opts.sessionToken = options.sessionToken;
   }
 
-  settings.options = opts;
+  if (options.httpOptions) {
+    opts.httpOptions = options.httpOptions;
+  }
 
-  return settings;
+  if (options.rateLimit !== undefined) {
+    opts.rateLimit = options.rateLimit;
+  }
+
+  if (options.maxConnections !== undefined) {
+    opts.maxConnections = options.maxConnections;
+  }
+  return ses(opts);
+
 };
