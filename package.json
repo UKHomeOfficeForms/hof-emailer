@@ -20,7 +20,7 @@
     "coverage": "npm-run-all cover check-coverage",
     "cover": "istanbul cover _mocha",
     "check-coverage": "istanbul check-coverage --statement 100 --branch 100 --function 100 --line 100",
-    "snyk": "snyk test",
+    "snyk": "snyk auth $SNYK_AUTH && snyk test",
     "snyk:dev": "snyk test --dev"
   },
   "dependencies": {
