@@ -24,7 +24,7 @@
     "snyk:dev": "snyk test --dev"
   },
   "dependencies": {
-    "express": "^4.14.0",
+    "express": "^4.15.3",
     "express-partial-templates": "^0.2.0",
     "hogan-express-strict": "^0.5.4",
     "lodash": "^4.17.4",
