@@ -1,12 +1,13 @@
 language: node_js
 node_js:
-  - "4"
-  - "6"
-
+  - '4'
+  - '6'
+  - '7'
+  - '8'
 before_install:
-  - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
+  - 'if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi'
   - npm cache clean
-
 env:
   matrix:
-    secure: "MOfPcJpJxD112Iz9lIH0mWA1Ahpj9SlcB7S1QXmhZCMIusgvggCXRNhK2aFIDGwFkR88Mifb1CGsqkDR4w5JNzfs9Qnnna7JOP3e1s0ZWxoJlB2WcJsR8pwcZdNLZWuJVJnTkDJBv+l3ZdF/umk3S0Re+6wBf0w2QUpcN9PY4XAjH7jd9zR02Dn0yZo7+UIinmtda6CFS7njXRbsITIvmeZu09veyedL2MhT0bmP7X7m0jZ6wPoT5xpjSGUZGFiwkN+6V/jHmZzNmjMkSwrfvASsMbmtBIodyP0DnfTO2i75YWzsJWuDgLhJQJEMK0EaQBzosUU9V0zl4fye+VuX4qTHEm5hWxjrgvYKhUtyZMS5YFVBVAL9N7PZ3khBKTcbB7snQdNMNaAu19noYM1Yov0VOAxKL6peLW0ePaZ0nUhrYc5ep9p5qs5x5jmMpb0moZPvpr3yT2VZ3hK8W9jqlfPTe+IMNXbWY74jeGSbHUQfKmFp6Z0437LVEWNpTohVFRJXz0/UL1MYXkzr11MSfW+41mCgFtQeerLGO3VOXQr7dCqemcPhi0Vts/bfp/ystYfXe1E5qib8THmWOD15j6P9vuaw9FLhopPV/+zwAvjaAo6gMfuYHcvD6wDCxbySIby57hZWguGR5324KtbFTpNdBWHUl1O+/U2whYw81ag="
+    secure: >-
+      MOfPcJpJxD112Iz9lIH0mWA1Ahpj9SlcB7S1QXmhZCMIusgvggCXRNhK2aFIDGwFkR88Mifb1CGsqkDR4w5JNzfs9Qnnna7JOP3e1s0ZWxoJlB2WcJsR8pwcZdNLZWuJVJnTkDJBv+l3ZdF/umk3S0Re+6wBf0w2QUpcN9PY4XAjH7jd9zR02Dn0yZo7+UIinmtda6CFS7njXRbsITIvmeZu09veyedL2MhT0bmP7X7m0jZ6wPoT5xpjSGUZGFiwkN+6V/jHmZzNmjMkSwrfvASsMbmtBIodyP0DnfTO2i75YWzsJWuDgLhJQJEMK0EaQBzosUU9V0zl4fye+VuX4qTHEm5hWxjrgvYKhUtyZMS5YFVBVAL9N7PZ3khBKTcbB7snQdNMNaAu19noYM1Yov0VOAxKL6peLW0ePaZ0nUhrYc5ep9p5qs5x5jmMpb0moZPvpr3yT2VZ3hK8W9jqlfPTe+IMNXbWY74jeGSbHUQfKmFp6Z0437LVEWNpTohVFRJXz0/UL1MYXkzr11MSfW+41mCgFtQeerLGO3VOXQr7dCqemcPhi0Vts/bfp/ystYfXe1E5qib8THmWOD15j6P9vuaw9FLhopPV/+zwAvjaAo6gMfuYHcvD6wDCxbySIby57hZWguGR5324KtbFTpNdBWHUl1O+/U2whYw81ag=
