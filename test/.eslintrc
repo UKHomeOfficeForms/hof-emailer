@@ -7,3 +7,6 @@ env:
 
 rules:
   no-underscore-dangle: off
+
+globals:
+  sandbox: true
