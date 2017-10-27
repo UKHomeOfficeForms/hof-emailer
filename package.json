@@ -25,6 +25,7 @@
   "dependencies": {
     "debug": "^2.6.1",
     "hogan.js": "^3.0.2",
+    "mkdirp": "^0.5.1",
     "nodemailer": "^2.6.4",
     "nodemailer-ses-transport": "^1.5.0",
     "nodemailer-smtp-transport": "^2.7.2",

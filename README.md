@@ -34,13 +34,20 @@ emailer.send(to, body, subject)
 
 ## Options
 
-- `from`: <String>: address to send emails from. Required.
-- `transport`: <String>: Defaults to 'smtp' - nodemailer-smtp-transport. Also available is 'ses' - nodemailer-ses-transport.
+- `from`: <String>: Address to send emails from. Required.
+- `transport`: <String>: Select what mechanism to use to send emails. Defaults: 'smtp'.
 - `transportOptions`: <Object>: Set the options for the chosen transport, as defined below. Required.
 - `layout`: <String>: Optional path to use a custom layout for email content.
 
-### smtp options
+## Transports
+
+The following transport options are available:
+
+### `smtp`
+
 [nodemailer-smtp-transport](https://github.com/andris9/nodemailer-smtp-transport)
+
+#### Options
 
 - `host` <String>: Address of the mailserver. Required.
 - `port` <String|Number>: Port of the mailserver. Required.
@@ -49,8 +56,10 @@ emailer.send(to, body, subject)
 - `auth.user` <String>: Mailserver authorisation username.
 - `auth.pass` <String>: Mailserver authorisation password.
 
-### ses (AWS Simple Email Server API) options
+### `ses`
 [nodemailer-ses-transport](https://github.com/andris9/nodemailer-ses-transport)
+
+#### Options
 
 - `accessKeyId` <String>: AWS accessKeyId. Required.
 - `secretAccessKey` <String>: AWS accessKeyId. Required.
@@ -60,3 +69,15 @@ emailer.send(to, body, subject)
 - `rateLimit` <String>
 - `maxConnections` <String>
 
+### `debug`
+
+#### Options
+
+A development option to write the html content of the email to a file for inspection.
+
+- `dir` <String>: The location to save html to. Default: `./.emails`. This directory will be created if it does not exist.
+- `open` <Boolean>: If set to true, will automatically open the created html file in a browser.
+
+### `stub`
+
+Disables sending email. No options are required.
