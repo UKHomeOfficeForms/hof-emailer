@@ -1,6 +1,6 @@
 {
   "name": "hof-emailer",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A service for generating and sending html and raw emails for use with HOF services",
   "main": "index.js",
   "author": "UKHomeOffice",
