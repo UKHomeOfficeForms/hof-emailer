@@ -71,13 +71,24 @@ The following transport options are available:
 
 ### `debug`
 
-#### Options
-
 A development option to write the html content of the email to a file for inspection.
+
+`transport: 'debug'`
+
+#### debug options
 
 - `dir` <String>: The location to save html to. Default: `./.emails`. This directory will be created if it does not exist.
 - `open` <Boolean>: If set to true, will automatically open the created html file in a browser.
 
+#### debug example
+
+```
+transport: 'debug'
+transportOptions: {
+  dir: './emails',
+  open: true
+}
+```
 ### `stub`
 
 Disables sending email. No options are required.
