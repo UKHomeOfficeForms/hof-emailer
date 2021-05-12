@@ -11,6 +11,9 @@
   "bugs": {
     "url": "https://github.com/UKHomeOffice/hof-emailer/issues"
   },
+  "engines": {
+    "node": "14.16.1"
+  },
   "homepage": "https://github.com/UKHomeOffice/hof-emailer",
   "scripts": {
     "test": "npm-run-all lint unit coverage",
