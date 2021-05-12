@@ -1,6 +1,6 @@
 {
   "name": "hof-emailer",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "A service for generating and sending html and raw emails for use with HOF services",
   "main": "index.js",
   "author": "UKHomeOffice",
@@ -13,7 +13,7 @@
   },
   "homepage": "https://github.com/UKHomeOffice/hof-emailer",
   "scripts": {
-    "test": "npm-run-all lint unit coverage snyk",
+    "test": "npm-run-all lint unit coverage",
     "unit": "mocha",
     "lint": "eslint .",
     "coverage": "npm-run-all cover check-coverage",
@@ -26,7 +26,7 @@
     "debug": "^2.6.1",
     "hogan.js": "^3.0.2",
     "mkdirp": "^0.5.1",
-    "nodemailer": "^2.6.4",
+    "nodemailer": "^6.6.0",
     "nodemailer-ses-transport": "^1.5.0",
     "nodemailer-smtp-transport": "^2.7.2",
     "nodemailer-stub-transport": "^1.1.0"
