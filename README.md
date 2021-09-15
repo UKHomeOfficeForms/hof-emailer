@@ -1,3 +1,7 @@
+# DEPRECATED
+
+hof-emailer is built into hof v19 🎆
+
 # HOF Emailer
 
 An emailer service for HOF applications.
